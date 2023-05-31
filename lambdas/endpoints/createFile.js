@@ -9,7 +9,6 @@ exports.handler = async (event) => {
   console.log("event", event);
 
   if (!event.pathParameters || !event.pathParameters.fileName) {
-    // failed without a fileName
     return Responses._400({ message: "missing the fileName from the path" });
   }
 
