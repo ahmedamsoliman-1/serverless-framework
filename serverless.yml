@@ -1,15 +1,4 @@
 # Welcome to Serverless!
-#
-# This file is the main config file for your service.
-# It's very minimal at this point and uses default values.
-# You can always add more config options for more control.
-# We've included some commented out config examples here.
-# Just uncomment any of them to get that config option.
-#
-# For full config options, check the docs:
-#    docs.serverless.com
-#
-# Happy Coding!
 
 service: serverless-framework
 # app and org for use with dashboard.serverless.com
@@ -29,9 +18,11 @@ provider:
     - Effect: Allow
       Action:
         - dynamodb:*
+        - s3:*
       Resource: "*"
   environment:
     tableName: ${self:custom.tableName}
+    bucketName: ${self:custom.bucketName}
 
 plugins:
   - serverless-s3-sync
@@ -42,8 +33,9 @@ package:
 
 custom:
   tableName: player-points
+  bucketName: serverless-project-upload-5-4345345-lambda
   s3Sync:
-    - bucketName: serverless-project-upload-5-4345345-lambda
+    - bucketName: ${self:custom.bucketName}
       localDir: Upload
 
 functions:
@@ -68,13 +60,27 @@ functions:
           path: create-player-score/{ID}
           method: POST
           cors: true
+  createFile:
+    handler: lambdas/endpoints/createFile.handler
+    events:
+      - http:
+          path: create-file/{fileName}
+          method: POST
+          cors: true
+  getFile:
+    handler: lambdas/endpoints/getFile.handler
+    events:
+      - http:
+          path: get-file/{fileName}
+          method: GET
+          cors: true
 
 resources:
   Resources:
     DemoBucketUpload:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: serverless-project-upload-5-4345345-lambda
+        BucketName: ${self:custom.bucketName}
     DemoDynamoDBTable:
       Type: AWS::DynamoDB::Table
       Properties:
