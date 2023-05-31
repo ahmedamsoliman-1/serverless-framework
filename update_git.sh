@@ -13,7 +13,7 @@ git status
 
 git add .
 
-git commit -m "update on $(date) by $(whoami) on $(hostname) for the files: $commit_message"
+git commit -m "Update on by $(whoami) on $(hostname) for the files: $commit_message"
 
 git push origin main
 
