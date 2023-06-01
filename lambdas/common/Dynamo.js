@@ -1,6 +1,6 @@
 const AWS = require("aws-sdk");
 
-const docmentClient = new AWS.DynamoDB.DocumentClient();
+const documentClient = new AWS.DynamoDB.DocumentClient();
 
 const Dynamo = {
   async get(ID, TableName) {
@@ -11,7 +11,7 @@ const Dynamo = {
       },
     };
 
-    const data = await docmentClient.get(params).promise();
+    const data = await documentClient.get(params).promise();
 
     if (!data || !data.Item) {
       throw Error(
@@ -33,7 +33,7 @@ const Dynamo = {
       Item: data,
     };
 
-    const res = await docmentClient.put(params).promise();
+    const res = await documentClient.put(params).promise();
 
     if (!res) {
       throw Error(
@@ -42,6 +42,16 @@ const Dynamo = {
     }
 
     return data;
+  },
+
+  async delete(ID, TableName) {
+    const params = {
+      TableName,
+      Key: {
+        ID,
+      },
+    };
+    return documentClient.delete(params).promise();
   },
 };
 

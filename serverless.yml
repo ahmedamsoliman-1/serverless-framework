@@ -1,4 +1,4 @@
-service: serverless-framework-web-socket
+service: serverless-framework-websockets
 
 frameworkVersion: "3"
 
@@ -7,7 +7,49 @@ provider:
   runtime: nodejs18.x
   profile: default
   region: us-east-1
+  environment:
+    tableName: ${self:custom.tableName}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:*
+      Resource: "*"
+
+custom:
+  tableName: web-sockets-users
 
 functions:
+  websockets-connect:
+    handler: lambdas/websockets/connect.handler
+    events:
+      - websocket:
+          route: $connect
+  websockets-disconnect:
+    handler: lambdas/websockets/disconnect.handler
+    events:
+      - websocket:
+          route: $disconnect
+  websockets-default:
+    handler: lambdas/websockets/default.handler
+    events:
+      - websocket:
+          route: $default
+  websockets-message:
+    handler: lambdas/websockets/message.handler
+    events:
+      - websocket:
+          route: message
 
 resources:
+  Resources:
+    WebsocketsUserTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.tableName}
+        AttributeDefinitions:
+          - AttributeName: ID
+            AttributeType: S
+        KeySchema:
+          - AttributeName: ID
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
