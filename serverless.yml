@@ -1,12 +1,10 @@
 # Welcome to Serverless!
 
-service: serverless-framework
+service: serverless-framework-send-sms-text
 # app and org for use with dashboard.serverless.com
-#app: your-app-name
-#org: your-org-name
+app: serverless-framework-send-sms-text
+org: ahmedalimsoliman
 
-# You can pin your service to only deploy with a specific Serverless version
-# Check out our docs for more details
 frameworkVersion: "3"
 
 provider:
@@ -14,87 +12,19 @@ provider:
   runtime: nodejs18.x
   profile: default
   region: us-east-1
-  environment:
-    tableName: ${self:custom.tableName}
-    bucketName: ${self:custom.bucketName}
   iamRoleStatements:
     - Effect: Allow
       Action:
-        - dynamodb:*
-        - s3:*
+        - sns:SetSMSAttributes
+        - sns:Publish
       Resource: "*"
-  # apiKeys:
-  #   apiGateway:
-  #     - api-key-1
-  # apiKeys:
-  #   - "api-key-1"
-
-plugins:
-  - serverless-s3-sync
-  - serverless-webpack
-
-package:
-  individually: true
-
-custom:
-  tableName: player-points
-  bucketName: serverless-project-upload-5-4345345-lambda
-  s3Sync:
-    - bucketName: ${self:custom.bucketName}
-      localDir: Upload
 
 functions:
-  getUser:
-    handler: lambdas/endpoints/getUser.handler
+  sendSMS:
+    handler: lambdas/endpoints/sendSMS.handler
     events:
       - http:
-          path: get-user/{ID}
-          method: GET
+          path: send-sms
+          method: POST
           cors: true
           private: false
-  getPlayerScore:
-    handler: lambdas/endpoints/getPlayerScore.handler
-    events:
-      - http:
-          path: get-player-score/{ID}
-          method: GET
-          cors: true
-  createPlayerScore:
-    handler: lambdas/endpoints/createPlayerScore.handler
-    events:
-      - http:
-          path: create-player-score/{ID}
-          method: POST
-          cors: true
-  createFile:
-    handler: lambdas/endpoints/createFile.handler
-    events:
-      - http:
-          path: create-file/{fileName}
-          method: POST
-          cors: true
-  getFile:
-    handler: lambdas/endpoints/getFile.handler
-    events:
-      - http:
-          path: get-file/{fileName}
-          method: GET
-          cors: true
-
-resources:
-  Resources:
-    DemoBucketUpload:
-      Type: AWS::S3::Bucket
-      Properties:
-        BucketName: ${self:custom.bucketName}
-    DemoDynamoDBTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: ${self:custom.tableName}
-        AttributeDefinitions:
-          - AttributeName: ID
-            AttributeType: S
-        KeySchema:
-          - AttributeName: ID
-            KeyType: HASH
-        BillingMode: PAY_PER_REQUEST
