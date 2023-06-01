@@ -1,5 +1,8 @@
 service: serverless-framework-websockets
 
+app: serverless-framework-websockets
+org: ahmedalimsoliman
+
 frameworkVersion: "3"
 
 provider:
