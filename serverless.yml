@@ -2,11 +2,9 @@
 
 service: ${self:custom.serverlessStackName}
 
-app: ${self:custom.serverlessStackName}
+app: serverless-comperhend
 org: ahmedalimsoliman
 
-# You can pin your service to only deploy with a specific Serverless version
-# Check out our docs for more details
 frameworkVersion: "3"
 
 provider:
@@ -14,11 +12,20 @@ provider:
   runtime: nodejs18.x
   profile: default
   region: us-east-1
-
-plugins:
-  - serverless-webpack
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - comprehend:*
+      Resource: "*"
 
 custom:
-  serverlessStackName: serverless-project-name
+  serverlessStackName: serverless-comperhend
 
 functions:
+  analyse:
+    handler: lambdas/endpoints/analyse.handler
+    events:
+      - http:
+          path: analyse
+          method: POST
+          cors: true
