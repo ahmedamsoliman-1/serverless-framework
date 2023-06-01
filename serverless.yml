@@ -15,17 +15,17 @@ provider:
   iamRoleStatements:
     - Effect: Allow
       Action:
-        - comprehend:*
+        - xxxx:*
       Resource: "*"
 
 custom:
-  serverlessStackName: serverless-comperhend
+  serverlessStackName: serverless-clean-xxxxxx
 
 functions:
-  analyse:
-    handler: lambdas/endpoints/analyse.handler
+  xx:
+    handler: lambdas/endpoints/xx.handler
     events:
       - http:
-          path: analyse
+          path: xx
           method: POST
           cors: true
