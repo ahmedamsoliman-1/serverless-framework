@@ -1,9 +1,9 @@
 # Welcome to Serverless!
 
-service: serverless-framework
-# app and org for use with dashboard.serverless.com
-#app: your-app-name
-#org: your-org-name
+service: ${self:custom.serverlessStackName}
+
+app: ${self:custom.serverlessStackName}
+org: ahmedalimsoliman
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
@@ -14,34 +14,12 @@ provider:
   runtime: nodejs18.x
   profile: default
   region: us-east-1
-  environment:
-    tableName: ${self:custom.tableName}
-    bucketName: ${self:custom.bucketName}
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - dynamodb:*
-        - s3:*
-      Resource: "*"
-  # apiKeys:
-  #   apiGateway:
-  #     - api-key-1
-  # apiKeys:
-  #   - "api-key-1"
 
 plugins:
-  - serverless-s3-sync
   - serverless-webpack
 
-package:
-  individually: true
-
 custom:
-  tableName: player-points
-  bucketName: serverless-project-upload-5-4345345-lambda
-  s3Sync:
-    - bucketName: ${self:custom.bucketName}
-      localDir: Upload
+  serverlessStackName: serverless
 
 functions:
   getUser:
@@ -52,34 +30,6 @@ functions:
           method: GET
           cors: true
           private: false
-  getPlayerScore:
-    handler: lambdas/endpoints/getPlayerScore.handler
-    events:
-      - http:
-          path: get-player-score/{ID}
-          method: GET
-          cors: true
-  createPlayerScore:
-    handler: lambdas/endpoints/createPlayerScore.handler
-    events:
-      - http:
-          path: create-player-score/{ID}
-          method: POST
-          cors: true
-  createFile:
-    handler: lambdas/endpoints/createFile.handler
-    events:
-      - http:
-          path: create-file/{fileName}
-          method: POST
-          cors: true
-  getFile:
-    handler: lambdas/endpoints/getFile.handler
-    events:
-      - http:
-          path: get-file/{fileName}
-          method: GET
-          cors: true
 
 resources:
   Resources:
