@@ -51,7 +51,7 @@ functions:
           path: get-user/{ID}
           method: GET
           cors: true
-          private: true
+          private: false
   getPlayerScore:
     handler: lambdas/endpoints/getPlayerScore.handler
     events:
