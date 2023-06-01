@@ -2,8 +2,8 @@
 
 service: serverless-framework
 # app and org for use with dashboard.serverless.com
-#app: your-app-name
-#org: your-org-name
+app: serverless-framework
+org: ahmedalimsoliman
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
