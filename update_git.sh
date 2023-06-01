@@ -33,7 +33,7 @@ branch=$(git symbolic-ref --short HEAD)
 modified_files=$(git status --porcelain | awk '{if ($1 == "M" || $1 == "A") print $2}')
 
 # Commit message mentioning the updated or added files and the branch
-commit_message="Updated on branch $branch by $(whoami) on $(hostname) for the files: $modified_files"
+commit_message="Updated on branch $branch by $(whoami) on $(hostname) for the files: "
 for file in $modified_files; do
   commit_message+=" $file"
 done
