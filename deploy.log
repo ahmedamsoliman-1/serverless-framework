@@ -1,0 +1,20 @@
+PS C:\workspace\Serverless\serverless-framework> serverless deploy
+Running "serverless" from node_modules
+
+Deploying serverless-framework to stage dev (us-east-1)
+
+✔ Service deployed to stack serverless-framework-dev (94s)
+endpoints:
+  GET - https://qn912cugxg.execute-api.us-east-1.amazonaws.com/dev/get-user/{ID}
+  GET - https://qn912cugxg.execute-api.us-east-1.amazonaws.com/dev/get-player-score/{ID}
+  POST - https://qn912cugxg.execute-api.us-east-1.amazonaws.com/dev/create-player-score/{ID}     
+  POST - https://qn912cugxg.execute-api.us-east-1.amazonaws.com/dev/create-file/{fileName}       
+  GET - https://qn912cugxg.execute-api.us-east-1.amazonaws.com/dev/get-file/{fileName}
+functions:
+  getUser: serverless-framework-dev-getUser (1.2 kB)
+  getPlayerScore: serverless-framework-dev-getPlayerScore (1.6 MB)
+  createPlayerScore: serverless-framework-dev-createPlayerScore (1.6 MB)
+  createFile: serverless-framework-dev-createFile (1.6 MB)
+  getFile: serverless-framework-dev-getFile (1.6 MB)
+
+1 deprecation found: run 'serverless doctor' for more details

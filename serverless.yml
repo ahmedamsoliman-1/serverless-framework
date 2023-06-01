@@ -14,15 +14,20 @@ provider:
   runtime: nodejs18.x
   profile: default
   region: us-east-1
+  environment:
+    tableName: ${self:custom.tableName}
+    bucketName: ${self:custom.bucketName}
   iamRoleStatements:
     - Effect: Allow
       Action:
         - dynamodb:*
         - s3:*
       Resource: "*"
-  environment:
-    tableName: ${self:custom.tableName}
-    bucketName: ${self:custom.bucketName}
+  # apiKeys:
+  #   apiGateway:
+  #     - api-key-1
+  # apiKeys:
+  #   - "api-key-1"
 
 plugins:
   - serverless-s3-sync
@@ -46,6 +51,7 @@ functions:
           path: get-user/{ID}
           method: GET
           cors: true
+          private: true
   getPlayerScore:
     handler: lambdas/endpoints/getPlayerScore.handler
     events:

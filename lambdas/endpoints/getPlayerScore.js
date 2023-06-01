@@ -10,13 +10,13 @@ exports.handler = async (event) => {
   console.log("event", event);
 
   if (!event.pathParameters || !event.pathParameters.ID) {
-    return Responses._400({ message: "missing the ID from the path" });
+    return Responses._400({ message: "Missing the ID from the path" });
   }
 
   let ID = event.pathParameters.ID;
 
   const user = await Dynamo.get(ID, tableName).catch((err) => {
-    console.log("error in Dynamo Get", err);
+    console.log("Error in Dynamo Get", err);
     return null;
   });
 
