@@ -23,15 +23,11 @@ provider:
         - dynamodb:*
         - s3:*
       Resource: "*"
-  # apiKeys:
-  #   apiGateway:
-  #     - api-key-1
-  # apiKeys:
-  #   - "api-key-1"
 
 plugins:
   - serverless-s3-sync
   - serverless-webpack
+  - serverless-add-api-key
 
 package:
   individually: true
@@ -42,6 +38,35 @@ custom:
   s3Sync:
     - bucketName: ${self:custom.bucketName}
       localDir: Upload
+  apiKeys:
+    - name: api-key-1-free
+      value: QWERTYUIOPASDFGHJKLZXCVBNM1
+      usagePlan:
+        name: "free-usage-plan"
+        description: "Description of first plan"
+        quota:
+          limit: 1000
+          period: DAY
+        throttle:
+          burstLimit: 100
+          rateLimit: 20
+    - name: api-key-2-paid
+      value: QWERTYUIOPASDFGHJKLZXCVBNM2
+      usagePlan:
+        name: "paid-usage-plan"
+        description: "Description of first plan"
+        quota:
+          limit: 10000
+          period: DAY
+        throttle:
+          burstLimit: 100
+          rateLimit: 20
+    - name: api-key-3-no-usage-plan
+      value: QWERTYUIOPASDFGHJKLZXCVBNM3
+      usagePlan:
+        name: "name-of-first-usage-plan"
+    - name: api-key-4-four
+      value: QWERTYUIOPASDFGHJKLZXCVBNM4
 
 functions:
   getUser:
@@ -51,7 +76,7 @@ functions:
           path: get-user/{ID}
           method: GET
           cors: true
-          private: false
+          private: true
   getPlayerScore:
     handler: lambdas/endpoints/getPlayerScore.handler
     events:

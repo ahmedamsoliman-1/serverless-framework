@@ -4,7 +4,7 @@ exports.handler = async (event) => {
   console.log("event", event);
 
   if (!event.pathParameters || !event.pathParameters.ID) {
-    return Responses._400({ message: "missing the ID from the path" });
+    return Responses._400({ message: "Missing the ID from the path" });
   }
 
   let ID = event.pathParameters.ID;
@@ -17,7 +17,7 @@ exports.handler = async (event) => {
 };
 
 const data = {
-  1234: { name: "Anna Jones", age: 25, job: "journalist" },
+  1234: { name: "Anna Jones", age: 25, job: "Journalist" },
   7893: { name: "Chris Smith", age: 52, job: "teacher" },
   5132: { name: "Tom Hague", age: 23, job: "plasterer" },
 };
