@@ -2,7 +2,7 @@
 
 service: ${self:custom.serverlessStackName}
 
-app: serverless-comperhend
+app: ${self:custom.serverlessStackName}
 org: ahmedalimsoliman
 
 frameworkVersion: "3"
