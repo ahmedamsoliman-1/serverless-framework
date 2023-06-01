@@ -4,7 +4,6 @@ const Dynamo = require("../common/Dynamo");
 require("dotenv").config();
 
 const tableName = process.env.tableName;
-// const tableName = "player-points";
 
 exports.handler = async (event) => {
   console.log("event", event);

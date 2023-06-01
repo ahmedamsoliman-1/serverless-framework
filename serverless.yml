@@ -1,9 +1,9 @@
 # Welcome to Serverless!
 
-service: serverless-framework
+service: sls-dynamodb-get-post-player-score
 # app and org for use with dashboard.serverless.com
-#app: your-app-name
-#org: your-org-name
+app: sls-dynamodb-get-post-player-score
+org: ahmedalimsoliman
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
@@ -16,42 +16,22 @@ provider:
   region: us-east-1
   environment:
     tableName: ${self:custom.tableName}
-    bucketName: ${self:custom.bucketName}
   iamRoleStatements:
     - Effect: Allow
       Action:
         - dynamodb:*
-        - s3:*
       Resource: "*"
-  # apiKeys:
-  #   apiGateway:
-  #     - api-key-1
-  # apiKeys:
-  #   - "api-key-1"
 
 plugins:
-  - serverless-s3-sync
   - serverless-webpack
 
 package:
   individually: true
 
 custom:
-  tableName: player-points
-  bucketName: serverless-project-upload-5-4345345-lambda
-  s3Sync:
-    - bucketName: ${self:custom.bucketName}
-      localDir: Upload
+  tableName: sls-dynamodb-get-post-player-score
 
 functions:
-  getUser:
-    handler: lambdas/endpoints/getUser.handler
-    events:
-      - http:
-          path: get-user/{ID}
-          method: GET
-          cors: true
-          private: false
   getPlayerScore:
     handler: lambdas/endpoints/getPlayerScore.handler
     events:
@@ -66,27 +46,9 @@ functions:
           path: create-player-score/{ID}
           method: POST
           cors: true
-  createFile:
-    handler: lambdas/endpoints/createFile.handler
-    events:
-      - http:
-          path: create-file/{fileName}
-          method: POST
-          cors: true
-  getFile:
-    handler: lambdas/endpoints/getFile.handler
-    events:
-      - http:
-          path: get-file/{fileName}
-          method: GET
-          cors: true
 
 resources:
   Resources:
-    DemoBucketUpload:
-      Type: AWS::S3::Bucket
-      Properties:
-        BucketName: ${self:custom.bucketName}
     DemoDynamoDBTable:
       Type: AWS::DynamoDB::Table
       Properties:
