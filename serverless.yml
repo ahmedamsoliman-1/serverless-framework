@@ -12,11 +12,6 @@ provider:
   runtime: nodejs18.x
   profile: default
   region: us-east-1
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - xxxx:*
-      Resource: "*"
 
 plugins:
   - serverless-s3-sync
@@ -33,7 +28,12 @@ resources:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: ${self:custom.serverlessStackName}
-        AccessControl: PublicRead
+        # AccessControl: PublicRead
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: false
+        OwnershipControls:
+          Rules:
+            - ObjectOwnership: ObjectWriter
         WebsiteConfiguration:
           IndexDocument: index.html
           ErrorDocument: index.html
@@ -43,7 +43,7 @@ resources:
         Bucket:
           Ref: ReactAppBucket
         PolicyDocument:
-          Statment:
+          Statement:
             - Sid: PublicReadGetObject
               Effect: Allow
               Principal: "*"
@@ -56,7 +56,7 @@ resources:
         DistributionConfig:
           Origins:
             - DomainName: ${self:custom.serverlessStackName}.s3.amazonaws.com
-              ID: ReactApp
+              Id: ReactApp
               CustomOriginConfig:
                 HTTPPort: 80
                 HTTPSPort: 443
@@ -76,7 +76,7 @@ resources:
               - PATCH
               - POST
               - PUT
-            TargetOriginID: ReactApp
+            TargetOriginId: ReactApp
             ForwardedValues:
               QueryString: "false"
               Cookies:
