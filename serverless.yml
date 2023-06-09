@@ -16,19 +16,31 @@ provider:
 
     - Effect: Allow
       Action:
-        - s3:PutObject
+        - s3:*
       Resource: arn:aws:s3:::${self:custom.outputBucket}/*
 
 functions:
-  imageConversion:
-    handler: lambda_function.lambda_handler
+  deleteObjectsWithTrigger:
+    handler: functions/delete_object_upload_trigger.handler
+    events:
+      - s3:
+          bucket: ${self:custom.inputBucket}
+          event: s3:ObjectRemoved:*
+          rules:
+            - prefix: ""
+            - suffix: ""
+  copyObjectsWithTrigger:
+    handler: functions/copy_object_upload_trigger.handler
     events:
       - s3:
           bucket: ${self:custom.inputBucket}
           event: s3:ObjectCreated:*
-          # destination:
-          #   type: s3
-          #   bucket: ${self:custom.outputBucket}
+  # copyExistingObjects:
+  #   handler: functions/copy_existing_objects.handler
+  #   events:
+  #     - s3:
+  #         bucket: ${self:custom.inputBucket}
+  #         event: s3:ObjectCreated:*
 resources:
   Resources:
     OutputBucket:

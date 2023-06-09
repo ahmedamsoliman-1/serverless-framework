@@ -1,6 +1,6 @@
 import boto3
 
-def lambda_handler(event, context):
+def handler(event, context):
     s3_client = boto3.client('s3')
 
     # Get the source bucket and object key from the event
@@ -9,9 +9,10 @@ def lambda_handler(event, context):
 
     # Copy the object to the destination bucket
     destination_bucket = 'xdest.ahmedalimsoliman.click'
-    s3_client.copy_object(Bucket=destination_bucket, Key=object_key, CopySource={'Bucket': source_bucket, 'Key': object_key})
+    # s3_client.copy_object(Bucket=destination_bucket, Key=object_key, CopySource={'Bucket': source_bucket, 'Key': object_key})
+    s3_client.delete_object(Bucket=destination_bucket, Key=object_key)
 
     return {
         'statusCode': 200,
-        'body': 'Object copied successfully'
+        'body': 'Object deleted successfully'
     }
