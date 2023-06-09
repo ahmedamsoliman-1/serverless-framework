@@ -1,0 +1,41 @@
+service: image-conversion-3
+
+provider:
+  name: aws
+  runtime: python3.8
+  region: me-central-1
+  stage: ${opt:stage, 'dev'}
+  environment:
+    OUTPUT_BUCKET: ${self:custom.outputBucket}
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:GetObject
+      Resource: arn:aws:s3:::${self:custom.inputBucket}/*
+
+    - Effect: Allow
+      Action:
+        - s3:PutObject
+      Resource: arn:aws:s3:::${self:custom.outputBucket}/*
+
+functions:
+  imageConversion:
+    handler: lambda_function.lambda_handler
+    events:
+      - s3:
+          bucket: ${self:custom.inputBucket}
+          event: s3:ObjectCreated:*
+          # destination:
+          #   type: s3
+          #   bucket: ${self:custom.outputBucket}
+resources:
+  Resources:
+    OutputBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.outputBucket}
+
+custom:
+  inputBucket: xsource.ahmedalimsoliman.click
+  outputBucket: xdest.ahmedalimsoliman.click
